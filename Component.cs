@@ -26,10 +26,10 @@ namespace LiveSplit.CrashCounter
         public float PaddingBottom => 0;
         public float PaddingRight => 0;
 
-        public float VerticalHeight => settings.GraphHeight + 4;
+        public float VerticalHeight => settings.GraphHeight;
         public float MinimumWidth => 180;
-        public float HorizontalWidth => settings.GraphWidth + 4;
-        public float MinimumHeight => settings.GraphHeight + 4;
+        public float HorizontalWidth => settings.GraphWidth;
+        public float MinimumHeight => settings.GraphHeight;
 
         public IDictionary<string, Action> ContextMenuControls => null;
         bool firstLoad = true;
@@ -39,8 +39,6 @@ namespace LiveSplit.CrashCounter
 
         private uint v_NumberOfCrashes = 0;
         private uint v_NumberOfCrashesTotal = 0;
-        private uint v_OldNumberOfCrashes = 9999;
-        private uint v_OldNumberOfCrashesTotal = 9999;
 
 
         private bool overrideTextColorEnabled = false;
@@ -125,9 +123,9 @@ namespace LiveSplit.CrashCounter
             }
             // figure out where to draw the graph
             RectangleF graphRect = new RectangleF();
-            graphRect.Y = (height - graphHeight) / 2;
+            graphRect.Y = 0;
             graphRect.Width = width;
-            graphRect.Height = graphHeight;
+            graphRect.Height = height;
             graphRect.X = 0;
 
             // draw descriptive text
