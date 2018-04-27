@@ -62,13 +62,17 @@ namespace LiveSplit.CrashCounter
 
         public Component(LiveSplitState state)
         {
-            valueTextFormat = new StringFormat(StringFormatFlags.NoWrap);
-            valueTextFormat.LineAlignment = StringAlignment.Center;
-            valueTextFormat.Alignment = StringAlignment.Far;
+            valueTextFormat = new StringFormat(StringFormatFlags.NoWrap)
+            {
+                LineAlignment = StringAlignment.Center,
+                Alignment = StringAlignment.Far
+            };
 
-            descriptiveTextFormat = new StringFormat(StringFormatFlags.NoWrap);
-            descriptiveTextFormat.LineAlignment = StringAlignment.Center;
-            descriptiveTextFormat.Alignment = StringAlignment.Near;
+            descriptiveTextFormat = new StringFormat(StringFormatFlags.NoWrap)
+            {
+                LineAlignment = StringAlignment.Center,
+                Alignment = StringAlignment.Near
+            };
 
             settings = new Settings();
             settings.HandleDestroyed += SettingsUpdated;
@@ -83,7 +87,7 @@ namespace LiveSplit.CrashCounter
 
         private void SettingsUpdated(object sender, EventArgs e)
         {
-            overrideTextColorEnabled = settings.fieldOverrideTextColor;
+            overrideTextColorEnabled = settings.FieldOverrideTextColor;
 
             OverrideTextColor = settings.OverrideTextColor;
             BGBrush = new SolidBrush(settings.BackgroundColor);
@@ -122,11 +126,13 @@ namespace LiveSplit.CrashCounter
                 firstLoad = false;
             }
             // figure out where to draw the graph
-            RectangleF graphRect = new RectangleF();
-            graphRect.Y = 0;
-            graphRect.Width = width;
-            graphRect.Height = height;
-            graphRect.X = 0;
+            RectangleF graphRect = new RectangleF
+            {
+                Y = 0,
+                Width = width,
+                Height = height,
+                X = 0
+            };
 
             // draw descriptive text
             Font font = state.LayoutSettings.TextFont;
@@ -199,6 +205,7 @@ namespace LiveSplit.CrashCounter
                 {
                     v_NumberOfCrashes++;
                     v_NumberOfCrashesTotal++;
+                    settings.PlaySound();
                 }
 
                 process = null;

@@ -51,12 +51,21 @@ namespace LiveSplit.CrashCounter
             this.btnBackgroundColor1 = new System.Windows.Forms.Button();
             this.label3 = new System.Windows.Forms.Label();
             this.CB_OverrideTextColorEnabled = new System.Windows.Forms.CheckBox();
+            this.grpSound = new System.Windows.Forms.GroupBox();
+            this.L_SoundVolume = new System.Windows.Forms.Label();
+            this.B_Test = new System.Windows.Forms.Button();
+            this.TrackBar_SoundVolume = new System.Windows.Forms.TrackBar();
+            this.TB_SoundPath_Browse = new System.Windows.Forms.Button();
+            this.TB_SoundPath = new System.Windows.Forms.TextBox();
+            this.CB_PlaySoundOnCrash = new System.Windows.Forms.CheckBox();
             this.toolTip = new System.Windows.Forms.ToolTip(this.components);
             this.tableLayoutPanel1.SuspendLayout();
             this.grpPointerPath.SuspendLayout();
             this.grpGraph.SuspendLayout();
             this.tableLayoutPanel3.SuspendLayout();
             this.tableLayoutPanel4.SuspendLayout();
+            this.grpSound.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.TrackBar_SoundVolume)).BeginInit();
             this.SuspendLayout();
             // 
             // tableLayoutPanel1
@@ -64,15 +73,17 @@ namespace LiveSplit.CrashCounter
             this.tableLayoutPanel1.ColumnCount = 1;
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel1.Controls.Add(this.grpPointerPath, 0, 0);
-            this.tableLayoutPanel1.Controls.Add(this.grpGraph, 0, 1);
+            this.tableLayoutPanel1.Controls.Add(this.grpGraph, 0, 2);
+            this.tableLayoutPanel1.Controls.Add(this.grpSound, 0, 1);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
-            this.tableLayoutPanel1.RowCount = 3;
+            this.tableLayoutPanel1.RowCount = 4;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 84F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 120F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 131F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 119F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(461, 217);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(461, 346);
             this.tableLayoutPanel1.TabIndex = 0;
             // 
             // grpPointerPath
@@ -165,9 +176,9 @@ namespace LiveSplit.CrashCounter
             // 
             this.grpGraph.Controls.Add(this.tableLayoutPanel3);
             this.grpGraph.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.grpGraph.Location = new System.Drawing.Point(3, 87);
+            this.grpGraph.Location = new System.Drawing.Point(3, 218);
             this.grpGraph.Name = "grpGraph";
-            this.grpGraph.Size = new System.Drawing.Size(455, 114);
+            this.grpGraph.Size = new System.Drawing.Size(455, 113);
             this.grpGraph.TabIndex = 1;
             this.grpGraph.TabStop = false;
             this.grpGraph.Text = "Graph";
@@ -182,7 +193,7 @@ namespace LiveSplit.CrashCounter
             this.tableLayoutPanel3.Name = "tableLayoutPanel3";
             this.tableLayoutPanel3.RowCount = 1;
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 68F));
-            this.tableLayoutPanel3.Size = new System.Drawing.Size(449, 95);
+            this.tableLayoutPanel3.Size = new System.Drawing.Size(449, 94);
             this.tableLayoutPanel3.TabIndex = 0;
             // 
             // tableLayoutPanel4
@@ -251,11 +262,82 @@ namespace LiveSplit.CrashCounter
             this.CB_OverrideTextColorEnabled.Text = "Override Text Color";
             this.CB_OverrideTextColorEnabled.UseVisualStyleBackColor = true;
             // 
+            // grpSound
+            // 
+            this.grpSound.Controls.Add(this.L_SoundVolume);
+            this.grpSound.Controls.Add(this.B_Test);
+            this.grpSound.Controls.Add(this.TrackBar_SoundVolume);
+            this.grpSound.Controls.Add(this.TB_SoundPath_Browse);
+            this.grpSound.Controls.Add(this.TB_SoundPath);
+            this.grpSound.Controls.Add(this.CB_PlaySoundOnCrash);
+            this.grpSound.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.grpSound.Location = new System.Drawing.Point(3, 87);
+            this.grpSound.Name = "grpSound";
+            this.grpSound.Size = new System.Drawing.Size(455, 125);
+            this.grpSound.TabIndex = 2;
+            this.grpSound.TabStop = false;
+            this.grpSound.Text = "Sound";
+            // 
+            // L_SoundVolume
+            // 
+            this.L_SoundVolume.Location = new System.Drawing.Point(6, 100);
+            this.L_SoundVolume.Name = "L_SoundVolume";
+            this.L_SoundVolume.Size = new System.Drawing.Size(361, 23);
+            this.L_SoundVolume.TabIndex = 5;
+            this.L_SoundVolume.Text = "Volume: 0%";
+            this.L_SoundVolume.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+            // 
+            // B_Test
+            // 
+            this.B_Test.Location = new System.Drawing.Point(373, 71);
+            this.B_Test.Name = "B_Test";
+            this.B_Test.Size = new System.Drawing.Size(75, 23);
+            this.B_Test.TabIndex = 4;
+            this.B_Test.Text = "Test";
+            this.B_Test.UseVisualStyleBackColor = true;
+            this.B_Test.Click += new System.EventHandler(this.B_Test_Click);
+            // 
+            // TrackBar_SoundVolume
+            // 
+            this.TrackBar_SoundVolume.Location = new System.Drawing.Point(6, 68);
+            this.TrackBar_SoundVolume.Maximum = 100;
+            this.TrackBar_SoundVolume.Name = "TrackBar_SoundVolume";
+            this.TrackBar_SoundVolume.Size = new System.Drawing.Size(361, 45);
+            this.TrackBar_SoundVolume.TabIndex = 3;
+            this.TrackBar_SoundVolume.Scroll += new System.EventHandler(this.TrackBar_SoundVolume_Scroll);
+            // 
+            // TB_SoundPath_Browse
+            // 
+            this.TB_SoundPath_Browse.Location = new System.Drawing.Point(373, 42);
+            this.TB_SoundPath_Browse.Name = "TB_SoundPath_Browse";
+            this.TB_SoundPath_Browse.Size = new System.Drawing.Size(75, 23);
+            this.TB_SoundPath_Browse.TabIndex = 2;
+            this.TB_SoundPath_Browse.Text = "Browse";
+            this.TB_SoundPath_Browse.UseVisualStyleBackColor = true;
+            this.TB_SoundPath_Browse.Click += new System.EventHandler(this.TB_SoundPath_Browse_Click);
+            // 
+            // TB_SoundPath
+            // 
+            this.TB_SoundPath.Location = new System.Drawing.Point(6, 42);
+            this.TB_SoundPath.Name = "TB_SoundPath";
+            this.TB_SoundPath.Size = new System.Drawing.Size(361, 20);
+            this.TB_SoundPath.TabIndex = 1;
+            // 
+            // CB_PlaySoundOnCrash
+            // 
+            this.CB_PlaySoundOnCrash.AutoSize = true;
+            this.CB_PlaySoundOnCrash.Location = new System.Drawing.Point(12, 19);
+            this.CB_PlaySoundOnCrash.Name = "CB_PlaySoundOnCrash";
+            this.CB_PlaySoundOnCrash.Size = new System.Drawing.Size(122, 17);
+            this.CB_PlaySoundOnCrash.TabIndex = 0;
+            this.CB_PlaySoundOnCrash.Text = "Play sound on crash";
+            this.CB_PlaySoundOnCrash.UseVisualStyleBackColor = true;
+            // 
             // Settings
             // 
             this.Controls.Add(this.tableLayoutPanel1);
             this.Name = "Settings";
-            this.Size = new System.Drawing.Size(461, 217);
+            this.Size = new System.Drawing.Size(461, 346);
             this.tableLayoutPanel1.ResumeLayout(false);
             this.grpPointerPath.ResumeLayout(false);
             this.grpPointerPath.PerformLayout();
@@ -263,6 +345,9 @@ namespace LiveSplit.CrashCounter
             this.tableLayoutPanel3.ResumeLayout(false);
             this.tableLayoutPanel4.ResumeLayout(false);
             this.tableLayoutPanel4.PerformLayout();
+            this.grpSound.ResumeLayout(false);
+            this.grpSound.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.TrackBar_SoundVolume)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -287,5 +372,12 @@ namespace LiveSplit.CrashCounter
         private System.Windows.Forms.TextBox TB_CrasshesSession;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TextBox TB_ProcessName;
+        private System.Windows.Forms.GroupBox grpSound;
+        private System.Windows.Forms.Button TB_SoundPath_Browse;
+        private System.Windows.Forms.TextBox TB_SoundPath;
+        private System.Windows.Forms.CheckBox CB_PlaySoundOnCrash;
+        private System.Windows.Forms.Button B_Test;
+        private System.Windows.Forms.TrackBar TrackBar_SoundVolume;
+        private System.Windows.Forms.Label L_SoundVolume;
     }
 }
