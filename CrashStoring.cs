@@ -50,7 +50,7 @@ namespace LiveSplit.CrashCounter
 
         public void UpdateGameInfo(string processName, uint totalCrashes)
         {
-            if(processName != String.Empty)
+            if(processName != null && processName != String.Empty)
             {
                 processName = processName.ToLower();
                 if(rootNode[processName] != null)

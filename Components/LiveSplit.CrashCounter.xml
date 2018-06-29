@@ -1,4 +1,13 @@
 <updates>
+    <update version="1.1.1">
+        <files>
+            <file path="Components/LiveSplit.CrashCounter.dll" status="changed"/>
+        </files>
+        <changelog>
+            <change>Fixed object doesn't exist (null object) exception on clicking name set.</change>
+			<change>Fixed process detection.</change>
+        </changelog>
+    </update>
     <update version="1.1.0">
         <files>
             <file path="Components/LiveSplit.CrashCounter.dll" status="changed"/>

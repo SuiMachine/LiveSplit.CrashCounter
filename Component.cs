@@ -185,8 +185,7 @@ namespace LiveSplit.CrashCounter
         
         public void Update(IInvalidator invalidator, LiveSplitState state, float width, float height, LayoutMode mode)
         {
-            if (process != null && !process.HasExited && 
-                process.ProcessName == processName)
+            if (process != null && !process.HasExited )
             {
                 if(processHandle == IntPtr.Zero)
                 {
