@@ -82,7 +82,7 @@ namespace LiveSplit.CrashCounter
 
         private void TriggerSaveXML(object sender, FormClosingEventArgs e)
         {
-            settings.crashBank.UpdateGameInfo(settings.ProcessName, v_NumberOfCrashesTotal);
+            settings.crashBank.UpdateGameInfo(settings.ProcessName, v_NumberOfCrashesTotal, settings.AllowedReturnCodes);
         }
 
         private void SettingsUpdated(object sender, EventArgs e)
@@ -200,7 +200,9 @@ namespace LiveSplit.CrashCounter
             else if(process != null && process.HasExited)
             {
                 GetExitCodeProcess(processHandle, out int exitCode);
-                if(exitCode != 0)
+                if (settings != null)
+                    settings.LastReturnCode = exitCode;
+                if(settings.AllowedReturnCodes.Length > 0 ? !settings.AllowedReturnCodes.Contains(exitCode) : exitCode != 0)
                 {
                     v_NumberOfCrashes++;
                     v_NumberOfCrashesTotal++;

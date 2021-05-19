@@ -48,7 +48,36 @@ namespace LiveSplit.CrashCounter
                 return 0;
         }
 
-        public void UpdateGameInfo(string processName, uint totalCrashes)
+        public int[] GetAllowedReturnCodes(string processName)
+        {
+            processName = processName.ToLower();
+            if (rootNode[processName] != null)
+            {
+                if(rootNode[processName].Attributes["ReturnCodes"] != null)
+                {
+                    var split = rootNode[processName].Attributes["ReturnCodes"].Value.Split(',');
+                    List<int> returnCodesList = new List<int>();
+                    foreach(var element in split)
+                    {
+                        if (int.TryParse(element, out int ReturnCode))
+                        {
+                            if (!returnCodesList.Contains(ReturnCode))
+                                returnCodesList.Add(ReturnCode);
+                        }
+
+                    }
+                    return returnCodesList.ToArray();
+
+                }
+                else
+                    return new int[] { 0 };
+
+            }
+            else
+                return new int[] { 0 };
+        }
+
+        public void UpdateGameInfo(string processName, uint totalCrashes, int[] allowedReturnedCodes)
         {
             if(processName != null && processName != String.Empty)
             {
@@ -56,6 +85,15 @@ namespace LiveSplit.CrashCounter
                 if(rootNode[processName] != null)
                 {
                     rootNode[processName].InnerText = totalCrashes.ToString();
+                    if (rootNode[processName].Attributes["ReturnCodes"] != null)
+                        rootNode[processName].Attributes["ReturnCodes"].Value = string.Join(",", allowedReturnedCodes);
+                    else
+                    {
+                        var newAttribute = xmlDoc.CreateAttribute("ReturnCodes");
+                        newAttribute.Value = string.Join(",", allowedReturnedCodes);
+                        rootNode[processName].Attributes.Append(newAttribute);
+                    }
+                    
                     xmlDoc.Save(XMLFILENAME);
                 }
                 else

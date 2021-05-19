@@ -36,6 +36,11 @@ namespace LiveSplit.CrashCounter
             this.components = new System.ComponentModel.Container();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.grpPointerPath = new System.Windows.Forms.GroupBox();
+            this.L_LastReturnCode = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
+            this.B_SetAllowedReturnCodes = new System.Windows.Forms.Button();
+            this.label1 = new System.Windows.Forms.Label();
+            this.TB_AllowedReturnCodes = new System.Windows.Forms.TextBox();
             this.TB_CrasshesTotal = new System.Windows.Forms.TextBox();
             this.label6 = new System.Windows.Forms.Label();
             this.B_SetProcessName = new System.Windows.Forms.Button();
@@ -79,15 +84,20 @@ namespace LiveSplit.CrashCounter
             this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 4;
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 84F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 131F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 119F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 126F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 126F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 120F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(461, 346);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(461, 379);
             this.tableLayoutPanel1.TabIndex = 0;
             // 
             // grpPointerPath
             // 
+            this.grpPointerPath.Controls.Add(this.L_LastReturnCode);
+            this.grpPointerPath.Controls.Add(this.label4);
+            this.grpPointerPath.Controls.Add(this.B_SetAllowedReturnCodes);
+            this.grpPointerPath.Controls.Add(this.label1);
+            this.grpPointerPath.Controls.Add(this.TB_AllowedReturnCodes);
             this.grpPointerPath.Controls.Add(this.TB_CrasshesTotal);
             this.grpPointerPath.Controls.Add(this.label6);
             this.grpPointerPath.Controls.Add(this.B_SetProcessName);
@@ -99,10 +109,54 @@ namespace LiveSplit.CrashCounter
             this.grpPointerPath.Dock = System.Windows.Forms.DockStyle.Top;
             this.grpPointerPath.Location = new System.Drawing.Point(3, 3);
             this.grpPointerPath.Name = "grpPointerPath";
-            this.grpPointerPath.Size = new System.Drawing.Size(455, 78);
+            this.grpPointerPath.Size = new System.Drawing.Size(455, 120);
             this.grpPointerPath.TabIndex = 0;
             this.grpPointerPath.TabStop = false;
             this.grpPointerPath.Text = "Settings:";
+            // 
+            // L_LastReturnCode
+            // 
+            this.L_LastReturnCode.AutoSize = true;
+            this.L_LastReturnCode.Location = new System.Drawing.Point(102, 99);
+            this.L_LastReturnCode.Name = "L_LastReturnCode";
+            this.L_LastReturnCode.Size = new System.Drawing.Size(14, 13);
+            this.L_LastReturnCode.TabIndex = 12;
+            this.L_LastReturnCode.Text = "X";
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(9, 99);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(87, 13);
+            this.label4.TabIndex = 11;
+            this.label4.Text = "Last return code:";
+            // 
+            // B_SetAllowedReturnCodes
+            // 
+            this.B_SetAllowedReturnCodes.Location = new System.Drawing.Point(373, 74);
+            this.B_SetAllowedReturnCodes.Name = "B_SetAllowedReturnCodes";
+            this.B_SetAllowedReturnCodes.Size = new System.Drawing.Size(75, 23);
+            this.B_SetAllowedReturnCodes.TabIndex = 10;
+            this.B_SetAllowedReturnCodes.Text = "Set";
+            this.B_SetAllowedReturnCodes.UseVisualStyleBackColor = true;
+            this.B_SetAllowedReturnCodes.Click += new System.EventHandler(this.B_SetAllowedReturnCodes_Click);
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(9, 79);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(109, 13);
+            this.label1.TabIndex = 9;
+            this.label1.Text = "Allowed return codes:";
+            // 
+            // TB_AllowedReturnCodes
+            // 
+            this.TB_AllowedReturnCodes.Location = new System.Drawing.Point(124, 76);
+            this.TB_AllowedReturnCodes.Name = "TB_AllowedReturnCodes";
+            this.TB_AllowedReturnCodes.Size = new System.Drawing.Size(243, 20);
+            this.TB_AllowedReturnCodes.TabIndex = 8;
             // 
             // TB_CrasshesTotal
             // 
@@ -176,9 +230,9 @@ namespace LiveSplit.CrashCounter
             // 
             this.grpGraph.Controls.Add(this.tableLayoutPanel3);
             this.grpGraph.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.grpGraph.Location = new System.Drawing.Point(3, 218);
+            this.grpGraph.Location = new System.Drawing.Point(3, 255);
             this.grpGraph.Name = "grpGraph";
-            this.grpGraph.Size = new System.Drawing.Size(455, 113);
+            this.grpGraph.Size = new System.Drawing.Size(455, 114);
             this.grpGraph.TabIndex = 1;
             this.grpGraph.TabStop = false;
             this.grpGraph.Text = "Graph";
@@ -193,7 +247,7 @@ namespace LiveSplit.CrashCounter
             this.tableLayoutPanel3.Name = "tableLayoutPanel3";
             this.tableLayoutPanel3.RowCount = 1;
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 68F));
-            this.tableLayoutPanel3.Size = new System.Drawing.Size(449, 94);
+            this.tableLayoutPanel3.Size = new System.Drawing.Size(449, 95);
             this.tableLayoutPanel3.TabIndex = 0;
             // 
             // tableLayoutPanel4
@@ -271,9 +325,9 @@ namespace LiveSplit.CrashCounter
             this.grpSound.Controls.Add(this.TB_SoundPath);
             this.grpSound.Controls.Add(this.CB_PlaySoundOnCrash);
             this.grpSound.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.grpSound.Location = new System.Drawing.Point(3, 87);
+            this.grpSound.Location = new System.Drawing.Point(3, 129);
             this.grpSound.Name = "grpSound";
-            this.grpSound.Size = new System.Drawing.Size(455, 125);
+            this.grpSound.Size = new System.Drawing.Size(455, 120);
             this.grpSound.TabIndex = 2;
             this.grpSound.TabStop = false;
             this.grpSound.Text = "Sound";
@@ -337,7 +391,7 @@ namespace LiveSplit.CrashCounter
             // 
             this.Controls.Add(this.tableLayoutPanel1);
             this.Name = "Settings";
-            this.Size = new System.Drawing.Size(461, 346);
+            this.Size = new System.Drawing.Size(461, 379);
             this.tableLayoutPanel1.ResumeLayout(false);
             this.grpPointerPath.ResumeLayout(false);
             this.grpPointerPath.PerformLayout();
@@ -379,5 +433,10 @@ namespace LiveSplit.CrashCounter
         private System.Windows.Forms.Button B_Test;
         private System.Windows.Forms.TrackBar TrackBar_SoundVolume;
         private System.Windows.Forms.Label L_SoundVolume;
+        private System.Windows.Forms.Label L_LastReturnCode;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Button B_SetAllowedReturnCodes;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.TextBox TB_AllowedReturnCodes;
     }
 }

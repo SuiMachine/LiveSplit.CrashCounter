@@ -25,11 +25,13 @@ namespace LiveSplit.CrashCounter
         public int GraphHeight { get; set; }
         public uint NumberOfCrashesSession { get; set; }
         public uint NumberOfCrashesTotal { get; set; }
+        public int[] AllowedReturnCodes { get; set; }
         public string ProcessName { get; set; }
 
         public bool UseSound { get; set; }
         public float SoundVolume { get; set; }
         public string SoundFilePath { get; set; }
+        public int LastReturnCode { get; set; }
         private WaveOut Player { get; set; }
 
         public bool FieldOverrideTextColor { get; set; }
@@ -55,6 +57,7 @@ namespace LiveSplit.CrashCounter
             TB_CrasshesSession.DataBindings.Add("Text", this, "NumberOfCrashesSession", false, DataSourceUpdateMode.OnPropertyChanged);
             TB_CrasshesTotal.DataBindings.Add("Text", this, "NumberOfCrashesTotal", false, DataSourceUpdateMode.OnPropertyChanged);
             TB_SoundPath.DataBindings.Add("Text", this, "SoundFilePath", false, DataSourceUpdateMode.OnPropertyChanged);
+            L_LastReturnCode.DataBindings.Add("Text", this, "LastReturnCode", false, DataSourceUpdateMode.OnPropertyChanged);
 
             //Checkboxes
             CB_OverrideTextColorEnabled.DataBindings.Add("Checked", this, "fieldOverrideTextColor", false, DataSourceUpdateMode.OnPropertyChanged);
@@ -67,6 +70,8 @@ namespace LiveSplit.CrashCounter
             FieldOverrideTextColor = false;
             NumberOfCrashesSession = 0;
             NumberOfCrashesTotal = 0;
+            LastReturnCode = 0;
+            AllowedReturnCodes = new int[] { 0 };
 
             UseSound = false;
             SoundVolume = 0.5f;
@@ -102,6 +107,7 @@ namespace LiveSplit.CrashCounter
             TB_ProcessName.Text = ProcessName;
             NumberOfCrashesSession = 0;
             NumberOfCrashesTotal = crashBank.GetTotalCrashes(ProcessName);
+            AllowedReturnCodes = crashBank.GetAllowedReturnCodes(ProcessName);
             TrackBar_SoundVolume.Value = (int)(SoundVolume * 100);
             L_SoundVolume.Text = string.Format("Volume: {0}%", TrackBar_SoundVolume.Value);
         }
@@ -135,10 +141,11 @@ namespace LiveSplit.CrashCounter
 
         private void B_SetProcessName_Click(object sender, EventArgs e)
         {
-            crashBank.UpdateGameInfo(ProcessName, NumberOfCrashesTotal);
+            crashBank.UpdateGameInfo(ProcessName, NumberOfCrashesTotal, AllowedReturnCodes);
             ProcessName = TB_ProcessName.Text.ToLower();
             TB_CrasshesSession.Text = 0.ToString();
             TB_CrasshesTotal.Text = crashBank.GetTotalCrashes(ProcessName).ToString();
+            TB_AllowedReturnCodes.Text = string.Join(",", crashBank.GetAllowedReturnCodes(ProcessName));
         }
 
         private void B_SetCrashes_Click(object sender, EventArgs e)
@@ -149,7 +156,7 @@ namespace LiveSplit.CrashCounter
             if (uint.TryParse(TB_CrasshesTotal.Text, out temp))
                 NumberOfCrashesTotal = temp;
 
-            crashBank.UpdateGameInfo(ProcessName, NumberOfCrashesTotal);
+            crashBank.UpdateGameInfo(ProcessName, NumberOfCrashesTotal, AllowedReturnCodes);
         }
 
         private void TB_SoundPath_Browse_Click(object sender, EventArgs e)
@@ -200,6 +207,29 @@ namespace LiveSplit.CrashCounter
         {
             SoundVolume = TrackBar_SoundVolume.Value / 100f;
             L_SoundVolume.Text = string.Format("Volume: {0}%", TrackBar_SoundVolume.Value);
+        }
+
+        private void B_SetAllowedReturnCodes_Click(object sender, EventArgs e)
+        {
+            if(TB_AllowedReturnCodes.Text != "")
+            {
+                var split = TB_AllowedReturnCodes.Text.Split(',');
+                List<int> allowedReturnCodesList = new List<int>();
+                foreach(var element in split)
+                {
+                    if(int.TryParse(element, out int retValue))
+                    {
+                        if(!allowedReturnCodesList.Contains(retValue))
+                        {
+                            allowedReturnCodesList.Add(retValue);
+                        }
+                    }
+                }
+                AllowedReturnCodes = allowedReturnCodesList.ToArray();
+            }
+
+            crashBank.UpdateGameInfo(ProcessName, NumberOfCrashesTotal, AllowedReturnCodes);
+
         }
     }
 }
