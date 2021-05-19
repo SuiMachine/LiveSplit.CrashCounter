@@ -6,118 +6,95 @@ using System.Threading.Tasks;
 using System.IO;
 using System.Xml;
 using System.Xml.Linq;
-
+using System.Xml.Serialization;
 
 namespace LiveSplit.CrashCounter
 {
-    class CrashStoring
-    {
-        const string XMLFILENAME = "Components/LiveSplit.CrashCounter.xml";
-        const string XMLROOTNODE = "CrashGameRoot";
-        XmlDocument xmlDoc = new XmlDocument();
-        XmlNode rootNode;
+	[Serializable]
+
+	public class CrashStoring
+	{
+		[NonSerialized] private static CrashStoring _Instance;
+		public static CrashStoring GetInstance()
+		{
+			if (_Instance != null)
+				return _Instance;
+			else
+			{
+				_Instance = Load();
+				return _Instance;
+			}
+		}
 
 
-        public CrashStoring()
-        {
+		[NonSerialized]	const string XMLFILENAME = "Components/LiveSplit.CrashCounter.xml";
 
-            if(!File.Exists(XMLFILENAME))
-            {
-                var element = xmlDoc.CreateElement(XMLROOTNODE);
-                rootNode = xmlDoc.AppendChild(element);
-                xmlDoc.Save(XMLFILENAME);
-            }
-            else
-            {
-                xmlDoc.Load(XMLFILENAME);
-                rootNode = GetCreateNode(XMLROOTNODE);
-            }
-        }
+		[Serializable] 
+		public class CrashCounterGame
+		{
+			[XmlAttribute] public string GameName { get; set; }
+			[XmlAttribute] public string ProcessName { get; set; }
+			[XmlAttribute] public uint Crashes { get; set; }
+			[XmlAttribute] public int[] AllowedReturnCodes { get; set; }
 
-        public uint GetTotalCrashes(string processName)
-        {
-            processName = processName.ToLower();
-            if(rootNode[processName] != null)
-            {
-                if(uint.TryParse(rootNode[processName].InnerText, out uint val))
-                    return val;
-                else
-                    return 0;
-            }
-            else
-                return 0;
-        }
+			//Conversion String <-> Uint Array
+			[XmlIgnore]
+			public string AllowedReturnCodesString
+			{
+				get
+				{
+					return string.Join(", ", AllowedReturnCodes.Select(x => x.ToString()).ToArray());
+				}
+				set
+				{
+					AllowedReturnCodes = value.Split(',').Select(x => x.Trim()).Where(x => x != "").Select(x => int.Parse(x)).ToArray();
+				}
+			}
 
-        public int[] GetAllowedReturnCodes(string processName)
-        {
-            processName = processName.ToLower();
-            if (rootNode[processName] != null)
-            {
-                if(rootNode[processName].Attributes["ReturnCodes"] != null)
-                {
-                    var split = rootNode[processName].Attributes["ReturnCodes"].Value.Split(',');
-                    List<int> returnCodesList = new List<int>();
-                    foreach(var element in split)
-                    {
-                        if (int.TryParse(element, out int ReturnCode))
-                        {
-                            if (!returnCodesList.Contains(ReturnCode))
-                                returnCodesList.Add(ReturnCode);
-                        }
+			public CrashCounterGame()
+			{
+				GameName = "";
+				ProcessName = "";
+				Crashes = 0;
+				AllowedReturnCodes = new int[] { 0 };
+			}
+		}
 
-                    }
-                    return returnCodesList.ToArray();
+		[XmlArrayItem] public List<CrashCounterGame> Games { get; set; }
 
-                }
-                else
-                    return new int[] { 0 };
+		public CrashStoring()
+		{
+			Games = new List<CrashCounterGame>();
+		}
 
-            }
-            else
-                return new int[] { 0 };
-        }
+		public static CrashStoring Load()
+		{
+			if (!File.Exists(XMLFILENAME))
+			{
+				var obj = new CrashStoring();
+				XmlOperations.SaveObjectToXML(obj, XMLFILENAME);
+				return obj;
+			}
+			else
+				return XmlOperations.ReadFromXMLFile<CrashStoring>(XMLFILENAME);
+		}
 
-        public void UpdateGameInfo(string processName, uint totalCrashes, int[] allowedReturnedCodes)
-        {
-            if(processName != null && processName != String.Empty)
-            {
-                processName = processName.ToLower();
-                if(rootNode[processName] != null)
-                {
-                    rootNode[processName].InnerText = totalCrashes.ToString();
-                    if (rootNode[processName].Attributes["ReturnCodes"] != null)
-                        rootNode[processName].Attributes["ReturnCodes"].Value = string.Join(",", allowedReturnedCodes);
-                    else
-                    {
-                        var newAttribute = xmlDoc.CreateAttribute("ReturnCodes");
-                        newAttribute.Value = string.Join(",", allowedReturnedCodes);
-                        rootNode[processName].Attributes.Append(newAttribute);
-                    }
-                    
-                    xmlDoc.Save(XMLFILENAME);
-                }
-                else
-                {
-                    var nuNode = xmlDoc.CreateElement(processName);
-                    nuNode.InnerText = totalCrashes.ToString();
-                    rootNode.AppendChild(nuNode);
-                    xmlDoc.Save(XMLFILENAME);
-                }
-            }
-        }
+		public void Save()
+		{
+			XmlOperations.SaveObjectToXML(this, XMLFILENAME);
+		}
 
-        private XmlNode GetCreateNode(string NodeName)
-        {
-            XmlNode retNode;
-            if(xmlDoc[NodeName] == null)
-            {
-                retNode = xmlDoc.CreateElement(NodeName);
-                xmlDoc.AppendChild(retNode);
-            }
-            else
-                retNode = xmlDoc[NodeName];
-
-            return retNode;
-        }
-    }
+		internal CrashCounterGame GetGame(string gameName)
+		{
+			var game = Games.FirstOrDefault(x => x.GameName == gameName.ToLower());
+			if (game != null)
+				return game;
+			else
+			{
+				var newGame = new CrashCounterGame() { GameName = gameName.ToLower() };
+				Games.Add(newGame);
+				return newGame;
+			}
+		}
+	}
 }
