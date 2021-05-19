@@ -89,7 +89,7 @@ namespace LiveSplit.CrashCounter
 
 		private void TriggerSaveXML(object sender, FormClosingEventArgs e)
 		{
-			//settings.crashBank.UpdateGameInfo(gameName, settings.ProcessName, v_NumberOfCrashesTotal, settings.AllowedReturnCodes);
+			settings.crashBank.Save();
 		}
 
 		private void SettingsUpdated(object sender, EventArgs e)
