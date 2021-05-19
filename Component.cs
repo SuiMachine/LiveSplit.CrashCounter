@@ -197,10 +197,6 @@ namespace LiveSplit.CrashCounter
 				if (processHandle == IntPtr.Zero)
 				{
 					processHandle = process.Handle;
-				}
-
-				if (invalidator != null)
-				{
 					invalidator.Invalidate(0, 0, width, height);
 				}
 			}
@@ -213,7 +209,10 @@ namespace LiveSplit.CrashCounter
 				{
 					v_NumberOfCrashes++;
 					v_NumberOfCrashesTotal++;
+					settings.NumberOfCrashesSession++;
+					settings.currentGameCrashes.Crashes++;
 					settings.PlaySound();
+					invalidator.Invalidate(0, 0, width, height);
 				}
 
 				process = null;
@@ -264,6 +263,7 @@ namespace LiveSplit.CrashCounter
 		private void State_RunManuallyModified(object sender, EventArgs e)
 		{
 			settings.UpdateGame(state.Run.GameName);
+			SettingsUpdated(null, null);
 		}
 	}
 }
